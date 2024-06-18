@@ -1,9 +1,9 @@
 const addressRouter = require('./addressRoutes');
 const tokenRouter = require('./tokenRoutes');
-const transactionRouter = require('./transactionRoutes');
+const txRouter = require('./txRoutes');
 
 module.exports = {
     addressRouter,
     tokenRouter,
-    transactionRouter,
+    txRouter,
 }

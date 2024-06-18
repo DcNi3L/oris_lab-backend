@@ -3,7 +3,7 @@ const addressController = require('../controllers/addressController');
 
 const router = express.Router();
 
-router.get('/account', addressController.getInfo);
-router.post('')
+router.post('/save', addressController.saveToDB);
+router.get('/get', addressController.getAddress);
 
 module.exports = router;

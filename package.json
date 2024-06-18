@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "rollback": "node scripts/rollback.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Daniel Mekenbaev",
   "license": "ISC",
   "description": "",
   "dependencies": {

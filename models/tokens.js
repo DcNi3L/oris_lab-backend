@@ -1,18 +1,50 @@
 module.exports = (sequelize, DataTypes) => {
-    const Tokens = sequelize.define('Tokens', {
-        token_id: { type: DataTypes.STRING, primaryKey: true },
-        token_name: { type: DataTypes.STRING },
-        symbol: { type: DataTypes.STRING },
-        total_supply: { type: DataTypes.FLOAT },
-        precisions: { type: DataTypes.INTEGER },
-        issuer_address: { type: DataTypes.STRING },
-        creation_date: { type: DataTypes.DATE },
-        description: { type: DataTypes.STRING },
+    const Token = sequelize.define('Token', {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        token_id: {
+            type: DataTypes.INTEGER(),
+        },
+        decimals: {
+            type: DataTypes.SMALLINT,
+        },
+        symbol: {
+            type: DataTypes.STRING(16),
+        },
+        name: {
+            type: DataTypes.STRING(64),
+        },
+        contract: {
+            type: DataTypes.STRING(64),
+        },
+        abi: {
+            type: DataTypes.JSON,
+        },
+        standard: {
+            type: DataTypes.STRING,
+        },
+        description: {
+            type: DataTypes.STRING,
+        },
+        total_supply: {
+            type: DataTypes.DECIMAL(78, 0),
+        },
+        owner_address: {
+            type: DataTypes.STRING,
+        },
+        start_time: {
+            type: DataTypes.DATE,
+        },
+        end_time: {
+            type: DataTypes.DATE,
+        },
+    }, {
+        tableName: 'tokens',
+        timestamps: true,
     });
 
-    Tokens.associate = function(models) {
-        Tokens.hasMany(models.Transactions, { foreignKey: 'token_id', sourceKey: 'token_id' });
-    };
-
-    return Tokens;
+    return Token;
 };

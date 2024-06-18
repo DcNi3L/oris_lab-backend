@@ -1,17 +1,62 @@
 module.exports = (sequelize, DataTypes) => {
-    const Addresses = sequelize.define('Addresses', {
-        address: { type: DataTypes.STRING, primaryKey: true },
-        balance: { type: DataTypes.FLOAT },
-        trx_balance: { type: DataTypes.FLOAT },
-        tokens: { type: DataTypes.JSONB },
-        is_contract: { type: DataTypes.BOOLEAN },
-        creation_date: { type: DataTypes.DATE },
+    const Address = sequelize.define('Address', {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        address: {
+            type: DataTypes.STRING(64),
+            allowNull: false,
+        },
+        balance: {
+            type: DataTypes.BIGINT,
+        },
+        create_time: {
+            type: DataTypes.DATE,
+        },
+        latest_consume_time: {
+            type: DataTypes.DATE,
+        },
+        latest_operation_time: {
+            type: DataTypes.DATE,
+        },
+        account_resource: {
+            type: DataTypes.JSONB,
+        },
+        frozen: {
+            type: DataTypes.JSONB,
+        },
+        trc20: {
+            type: DataTypes.JSONB,
+        },
+        net_window_size: {
+            type: DataTypes.BIGINT,
+        },
+        net_window_optimized: {
+            type: DataTypes.BOOLEAN,
+        },
+        energy_window_size: {
+            type: DataTypes.BIGINT,
+        },
+        energy_window_optimized: {
+            type: DataTypes.BOOLEAN,
+        },
+        owner_permission: {
+            type: DataTypes.JSONB,
+        },
+        active_permission: {
+            type: DataTypes.JSONB,
+        },
+    }, {
+        tableName: 'addresses',
+        timestamps: true,
     });
 
-    Addresses.associate = function(models) {
-        Addresses.hasMany(models.Transactions, { foreignKey: 'from_address', sourceKey: 'address', as: 'SentTransactions' });
-        Addresses.hasMany(models.Transactions, { foreignKey: 'to_address', sourceKey: 'address', as: 'ReceivedTransactions' });
+    Address.associate = (models) => {
+        Address.hasMany(models.Transactions, { foreignKey: 'from_id', as: 'sentTransactions' });
+        Address.hasMany(models.Transactions, { foreignKey: 'to_id', as: 'receivedTransactions' });
     };
 
-    return Addresses;
+    return Address;
 };

@@ -1,22 +1,65 @@
 module.exports = (sequelize, DataTypes) => {
-  const Transactions = sequelize.define('Transactions', {
-    transaction_id: { type: DataTypes.STRING, primaryKey: true },
-    block_number: { type: DataTypes.INTEGER },
-    timestamp: { type: DataTypes.DATE },
-    from_address: { type: DataTypes.STRING },
-    to_address: { type: DataTypes.STRING },
-    amount: { type: DataTypes.FLOAT },
-    token_id: { type: DataTypes.STRING },
-    transaction_fee: { type: DataTypes.FLOAT },
-    contract_address: { type: DataTypes.STRING },
-    status: { type: DataTypes.STRING },
+  const Tx = sequelize.define('Tx', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    token_id: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+    },
+    nonce: {
+      type: DataTypes.INTEGER,
+    },
+    block: {
+      type: DataTypes.INTEGER,
+    },
+    value: {
+      type: DataTypes.DECIMAL(78, 18),
+      allowNull: false,
+    },
+    value_txt: {
+      type: DataTypes.STRING(68),
+      allowNull: false,
+    },
+    hash: {
+      type: DataTypes.STRING(68),
+      allowNull: false,
+      unique: true,
+    },
+    tx_fee: {
+      type: DataTypes.DECIMAL(78, 18),
+      defaultValue: 0,
+    },
+    tx_fee_txt: {
+      type: DataTypes.STRING(68),
+      defaultValue: '0x0',
+    },
+    from_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    to_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    ts: {
+      type: DataTypes.BIGINT,
+    },
+    info: {
+      type: DataTypes.STRING(256),
+    },
+  }, {
+    tableName: 'tx',
+    timestamps: true,
   });
 
-  Transactions.associate = function(models) {
-    Transactions.belongsTo(models.Addresses, { foreignKey: 'from_address', targetKey: 'address', as: 'FromAddress' });
-    Transactions.belongsTo(models.Addresses, { foreignKey: 'to_address', targetKey: 'address', as: 'ToAddress' });
-    Transactions.belongsTo(models.Tokens, { foreignKey: 'token_id', targetKey: 'token_id' });
+  Tx.associate = (models) => {
+    Tx.belongsTo(models.Addresses, { foreignKey: 'from_id', as: 'fromAddress' });
+    Tx.belongsTo(models.Addresses, { foreignKey: 'to_id', as: 'toAddress' });
+    Tx.belongsTo(models.Tokens, { foreignKey: 'token_id' });
   };
 
-  return Transactions;
+  return Tx;
 };

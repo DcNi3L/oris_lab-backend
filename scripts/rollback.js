@@ -2,9 +2,13 @@ const { sequelize } = require('../models');
 
 const rollbackMigrations = async () => {
     try {
-        await sequelize.getQueryInterface().dropTable('Transactions');
-        await sequelize.getQueryInterface().dropTable('Addresses');
-        await sequelize.getQueryInterface().dropTable('Tokens');
+
+        const tablesToDrop = ['tx', 'addresses', 'tokens', 'blocks_scanned'];
+
+        for (const table of tablesToDrop) {
+            await sequelize.getQueryInterface().dropTable(table);
+            console.log(`Table '${table}' dropped successfully`);
+        }
 
         console.log('Rollback was successful');
     } catch (error) {

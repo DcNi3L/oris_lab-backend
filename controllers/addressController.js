@@ -1,13 +1,23 @@
-const { getAccountByAddress } = require("../services/tronApiService");
+const { saveAddress, findAddress } = require('../services/addressService');
 
 const AddressController = {
-    async getInfo(req, res) {
-        const id = req.body.id;
+    async saveToDB(req, res) {
+        const { address } = req.body;
         try {
-            const data = await getAccountByAddress(id);
+            await saveAddress(address);
+            res.status(201).send({message: 'Address saved to database'});
+        } catch (e) {
+            res.status(500).send({ error: e.message });
+        }
+    },
+
+    async getAddress(req, res) {
+        const { address } = req.body;
+        try {
+            const data = await findAddress(address);
             res.status(200).send({data});
         } catch (e) {
-            res.status(500).send({ error: 'Account fetch error' });
+            res.status(500).send({ error: e.message });
         }
     }
 }
