@@ -3,23 +3,42 @@ const axios = require('axios');
 
 const TRON_URL = process.env.TRONGRID_API_URL;
 const TRON_API = process.env.TRONGRID_API_KEY;
+const TRON_URL_S = process.env.TRONGRID_API_URL_S;
 
 // Account info by hash
 const getAccountByAddress = async (id) => {
     try {
-        const res = await axios.get(`${TRON_URL}/v1/accounts/${id}`, {
+        const res = await axios.post(`${TRON_URL_S}/walletsolidity/getaccount`, {
+            address: id,
+            visible: true
+        }, {
             headers: {
                 'Content-Type': 'application/json',
                 'TRON-PRO-API-KEY': TRON_API,
             },
         });
-
         return res.data;
     } catch (e) {
         console.error('Tron-account fetch error: ', e.message);
         return null;
     }
 }
+
+//get address value
+const getAddress = async (address) => {
+    try {
+        const res = await axios.get(`${TRON_URL_S}/v1/accounts/${address}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'TRON-PRO-API-KEY': TRON_API,
+            },
+        })
+        return res.data.data[0].owner_permission.keys[0].address;
+    } catch (e) {
+        console.error('Tron-account fetch error: ', e.message);
+        return null;
+    }
+};
 
 // Transaction info by hash
 const getTransactionById = async (hash) => {
@@ -62,13 +81,13 @@ const getBlockById = async (blockId) => {
 // All transaction by account address hash
 const getAllTransactionsByAddress = async (address) => {
     try {
-        const res = await axios.get(`${TRON_URL}/v1/accounts/${address}/transactions`, {
+        const res = await axios.get(`${TRON_URL}/v1/accounts/${address}/transactions?limit=10`, {
             headers: {
                 'Content-Type': 'application/json',
                 'TRON-PRO-API-KEY': TRON_API,
             },
         });
-        return res.data;
+        return res.data.data;
     } catch (error) {
         console.error('Tron-failed to get transactions for address:', error.message);
         return null;
@@ -78,7 +97,7 @@ const getAllTransactionsByAddress = async (address) => {
 // Token info by address hash
 const getTokenByAddress = async (address) => {
     try {
-        const res = await axios.post(`${TRON_URL}/wallet/getassetissuebyaccount`, {
+        const res = await axios.post(`${TRON_URL_S}/wallet/getassetissuebyaccount`, {
             address: address,
             visible: true
         }, {
@@ -87,6 +106,7 @@ const getTokenByAddress = async (address) => {
                 'TRON-PRO-API-KEY': TRON_API,
             },
         });
+
         return res.data;
     } catch (error) {
         console.error('Tron-failed to get token for address:', error.message);
@@ -146,6 +166,7 @@ const getAllTokensOnChain = async () => {
 
 module.exports = {
     getAccountByAddress,
+    getAddress,
     getTransactionById,
     getBlockById,
     getAllTransactionsByAddress,

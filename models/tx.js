@@ -9,14 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.SMALLINT,
       allowNull: false,
     },
-    nonce: {
-      type: DataTypes.INTEGER,
-    },
-    block: {
+    block_num: {
       type: DataTypes.INTEGER,
     },
     value: {
-      type: DataTypes.DECIMAL(78, 18),
+      type: DataTypes.DECIMAL(78),
       allowNull: false,
     },
     value_txt: {
@@ -29,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
     tx_fee: {
-      type: DataTypes.DECIMAL(78, 18),
+      type: DataTypes.DECIMAL(78),
       defaultValue: 0,
     },
     tx_fee_txt: {
@@ -37,17 +34,17 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: '0x0',
     },
     from_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(34),
       allowNull: false,
     },
     to_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(34),
       allowNull: false,
     },
-    ts: {
-      type: DataTypes.BIGINT,
+    timestamp: {
+      type: DataTypes.DATE,
     },
-    info: {
+    type: {
       type: DataTypes.STRING(256),
     },
   }, {

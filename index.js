@@ -2,11 +2,15 @@ require('dotenv').config();
 const express = require('express');
 const sequelize = require('./config/database');
 const { Transactions, Addresses, Tokens } = require('./models');
-const { addressRouter, tokenRouter, transactionRouter } = require('./routes');
+const { addressRouter, tokenRouter, txRouter } = require('./routes');
 
 const app = express();
 app.use(express.json());
+
+//routes
 app.use('/api/addresses', addressRouter);
+app.use('/api/transactions', txRouter);
+app.use('/api/tokens', tokenRouter);
 
 const PORT = process.env.PORT || 3000;
 

@@ -27,19 +27,13 @@ module.exports = (sequelize, DataTypes) => {
         frozen: {
             type: DataTypes.JSONB,
         },
-        trc20: {
+        assetV2: {
             type: DataTypes.JSONB,
         },
         net_window_size: {
             type: DataTypes.BIGINT,
         },
         net_window_optimized: {
-            type: DataTypes.BOOLEAN,
-        },
-        energy_window_size: {
-            type: DataTypes.BIGINT,
-        },
-        energy_window_optimized: {
             type: DataTypes.BOOLEAN,
         },
         owner_permission: {

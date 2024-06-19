@@ -1,4 +1,4 @@
-const { saveAddress, findAddress } = require('../services/addressService');
+const { saveAddress, findAddress, findAll } = require('../services/addressService');
 
 const AddressController = {
     async saveToDB(req, res) {
@@ -17,6 +17,15 @@ const AddressController = {
             const data = await findAddress(address);
             res.status(200).send({data});
         } catch (e) {
+            res.status(500).send({ error: e.message });
+        }
+    },
+
+    async getAll(req, res) {
+        try {
+            const data = await findAll();
+            res.status(200).send({data});
+        }  catch (e) {
             res.status(500).send({ error: e.message });
         }
     }
