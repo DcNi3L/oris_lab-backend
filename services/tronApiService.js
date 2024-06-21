@@ -149,6 +149,7 @@ const getPaginatedTokenList = async (offset, limit) => {
     }
 };
 
+// All tokens from chain
 const getAllTokensOnChain = async () => {
     try {
         const res = await axios.get(`${TRON_URL}/v1/assets`, {
@@ -163,6 +164,25 @@ const getAllTokensOnChain = async () => {
         return null;
     }
 };
+
+// Account balance by address and block identifiers
+const getAccountBalance = async (address) => {
+    try {
+        const res = await axios.get(`${TRON_URL}/v1/accounts/${address}/balance`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'TRON-PRO-API-KEY': TRON_API,
+            }
+        })
+
+        console.log('Balance: ', res.data);
+    } catch (e) {
+        console.error('Tron-failed to get account balance:', e.message);
+        return null;
+    }
+};
+
+getAccountBalance('TJtzLhfs1wMLw4ga5dkoTR1tB1zMGjM5Q7');
 
 module.exports = {
     getAccountByAddress,
