@@ -193,5 +193,6 @@ module.exports = {
     getTokenByAddress,
     getTokenList,
     getPaginatedTokenList,
-    getAllTokensOnChain
+    getAllTokensOnChain,
+    getAccountBalance
 }
